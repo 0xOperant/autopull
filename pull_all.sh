@@ -1,20 +1,11 @@
 #!/bin/zsh
-
-# parent directory of your repos
-dir=~/awsgit
-
-# define repositories (one per line)
-repos="
-md
-red
-"
-
-# build array, split by newline (\n)
-repoarray=( ${(f)repos} )
+#
+# used to recursively git pull all of your repos
+# assumes all subdirectoris in pwd are repos
 
 # move into each repo, git pull
-for i in $repoarray; do
-    cd $dir/$i
+for i in *(/F); do
+    pushd $i
     echo "checking for updates in $i..."
     pull=$(git pull)
     if [ $pull = "Already up to date." ]; then
@@ -26,6 +17,7 @@ for i in $repoarray; do
         print $pull
         exit 1
     fi
+    popd
 done
 
 echo "done."
