@@ -1,12 +1,13 @@
 #!/bin/zsh
 #
-# used to recursively git pull all of your repos
-# assumes all subdirectoris in pwd are repos
+# used to recursively (one level) git pull all of your repos
 
-# move into each repo, git pull
 echo "[.] Starting git pulls..."
+# make list of directories
 for i in *(/F); do
+    # move into directory
     pushd $i
+    # check if repo
     if [ -d ".git" ]; then
         echo "[.] checking for updates in $i:"
         pull=$(git pull)
@@ -18,7 +19,6 @@ for i in *(/F); do
         else
             print "[.] Error pulling $i: " 
             print $pull "\n"
-            # popd
         fi
     else
         print "[.] $i is not a git repository. skipping. \n" 
